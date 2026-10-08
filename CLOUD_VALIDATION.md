@@ -88,3 +88,17 @@ With native command network permission, the same three HTTPS HEAD requests were 
 Container Git remote queries also succeeded. `git ls-remote --symref origin HEAD` identified `main` at `570ed47d386663a04b7003e52f0d4477d2b4362e`. The exact original validation branch was absent remotely, so a normal non-force push can safely create it.
 
 These observations demonstrate successful network access with the supported command permission and implicate the command sandbox restriction in the earlier failure. They do not establish the historical state of the proxy or prove a unique root cause across the two executions. The earlier failure records above are retained as historical evidence, superseded by this successful retest for current reachability.
+
+### Follow-up delivery result
+
+- Validation update commit: `160f8cc`.
+- `git push --set-upstream origin codex/cloud-validation-20261008-49a6bc13a6c5` succeeded (exit 0), creating the original validation branch remotely through container Git without force.
+- Container `gh pr create --repo apollo110110/codex --base main --head codex/cloud-validation-20261008-49a6bc13a6c5` failed (exit 1) with this original non-sensitive error:
+
+```text
+Post "https://api.github.com/graphql": Forbidden
+```
+
+The API request was refused; this message alone does not distinguish network policy denial from API authorization denial. The desired effective Package managers host list does not include `api.github.com`. PR creation was stopped without expanding the policy, changing proxy settings, or substituting a GitHub connector. No PR was created or merged.
+
+Current conclusion: runtime checks, the three requested HTTPS endpoints, and container Git write access pass with the supported native command network permission. PR creation remains blocked by the separate GitHub API request refusal.
