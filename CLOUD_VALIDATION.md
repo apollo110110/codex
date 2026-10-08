@@ -53,7 +53,16 @@ fatal: unable to access 'https://github.com/apollo110110/codex.git/': Failed to 
 
 - Remote branch existence therefore could not be verified. To avoid overwriting existing work, created a new unique local branch: `codex/cloud-validation-20261008-49a6bc13a6c5`. No force push will be used.
 - `git symbolic-ref refs/remotes/origin/HEAD` failed with exit 128: `fatal: ref refs/remotes/origin/HEAD is not a symbolic ref`; default branch was not inferred.
-- Commit and actual container Git push results are recorded below after execution.
+- Initial validation commit succeeded: `11bbb58` (`docs: record actual Cloud environment validation`).
+- Actual container command `git push --set-upstream origin HEAD` failed with exit 128:
+
+```text
+fatal: unable to access 'https://github.com/apollo110110/codex.git/': Failed to connect to proxy port 8080 after 0 ms: Could not connect to server
+```
+
+- Stopped remote delivery after this failure. PR creation was not attempted because the branch could not be pushed; no PR URL exists and no merge occurred.
+- A post-failure runtime status recheck still reported connected/running with current observations and network policy state `unknown`; command evidence remains the basis for the failure.
+- This report is committed locally; GitHub delivery remains incomplete.
 - PR creation depends on successful push; no merge is authorized.
 
 ## Conclusion
