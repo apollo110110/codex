@@ -133,8 +133,13 @@ Curl used `-q`, no Authorization header, token argument, or credential file; inh
 
 Runtime versions: Python 3.12.14, Node.js 24.19.0, npm 11.9.0, Git 2.52.0. Both runtime checks passed virtualenv, SQLite, TLS-context, temporary-file I/O, Node crypto and fetch availability. No application packages were installed.
 
-### Delivery in progress
+### Final delivery result
 
-Report-only update prepared for a normal non-force container push and container `gh pr create --body-file` to main. Final delivery evidence and URL will be appended after the actual operation.
+- Validation commit `2b894a2` was pushed normally from the container (exit 0), advancing the reused remote branch from `14cb38e`; no force push.
+- Container `gh pr create --repo apollo110110/codex --base main --head codex/cloud-validation-20261008-49a6bc13a6c5 --title ... --body-file /workspace/work/cloud-pr-body.md` succeeded (exit 0). The body was supplied as a file with real newlines.
+- PR: https://github.com/apollo110110/codex/pull/1 . Target main; original validation branch retained. No external-session connector was used.
+- This final report entry is committed and delivered by a second normal push. Its full final SHA is verified against remote Git and PR metadata after pushing; it is reported in the task response to avoid a self-referential commit hash.
+
+Current conclusion: this new Cloud task successfully reused the starter and existing validation branch, passed runtime and all four endpoint checks, performed container Git delivery and created the GitHub PR through container gh. Historical failures above are evidence of earlier attempts, not current blockers.
 
 Unverified: independent publication-control audit, Start skill, formal policy enforcement state, package download/install, application dependency/test readiness, GPU, services, deployment and AI Trading migration. No merge or deployment is authorized or performed.
