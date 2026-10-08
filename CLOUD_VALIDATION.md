@@ -68,3 +68,23 @@ fatal: unable to access 'https://github.com/apollo110110/codex.git/': Failed to 
 ## Conclusion
 
 The starter's local runtime can be reused in this Cloud task. GitHub delivery and HTTPS reachability are not validated because the inherited proxy is unreachable. Environment publication itself was not independently inspected.
+
+## Follow-up: native command network permission
+
+The earlier proxy-startup interpretation was not established. `Operation not permitted` can also arise from the command execution sandbox; the original failures alone did not uniquely identify a proxy fault.
+
+The exposed command tool schema supports `sandbox_permissions: "with_additional_permissions"` with `additional_permissions.network.enabled: true`. The exposed `request_permissions` tool granted network access for this turn. No unsandboxed execution, proxy bypass, policy file modification, certificate verification disablement, or credential inspection was used.
+
+The current Cloud status reports running/connected, current observations, spec revision 3, and the original restricted `package_managers` policy in state `enforced`, with no custom domains. This policy was not expanded.
+
+With native command network permission, the same three HTTPS HEAD requests were repeated, retaining inherited proxy settings and TLS verification:
+
+| Endpoint | curl exit | HTTP status | TLS verify result |
+| --- | --- | --- | --- |
+| `https://github.com` | 0 | 200 | 0 |
+| `https://pypi.org/simple/` | 0 | 200 | 0 |
+| `https://registry.npmjs.org/` | 0 | 200 | 0 |
+
+Container Git remote queries also succeeded. `git ls-remote --symref origin HEAD` identified `main` at `570ed47d386663a04b7003e52f0d4477d2b4362e`. The exact original validation branch was absent remotely, so a normal non-force push can safely create it.
+
+These observations demonstrate successful network access with the supported command permission and implicate the command sandbox restriction in the earlier failure. They do not establish the historical state of the proxy or prove a unique root cause across the two executions. The earlier failure records above are retained as historical evidence, superseded by this successful retest for current reachability.
