@@ -1,0 +1,23 @@
+# Local credentials and data
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials/
+secrets/
+private-data/
+
+# Generated development files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.DS_Store
